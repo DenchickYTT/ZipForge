@@ -19,7 +19,7 @@
 
 Для работы приложения не требуется установка Python.
 
-1. Перейдите в раздел [**Releases**](https://github.com/ВАШ_ЛОГИН/ZipForge/releases).
+1. Перейдите в раздел [**Releases**](https://github.com/DenchickYTT/ZipForge/releases).
 2. Скачайте последнюю версию файла `ZipForge.exe`.
 3. Запустите файл. Готово!
 
@@ -27,9 +27,4 @@
 
 ## 🛠️ Сборка из исходников
 
-Если вы хотите собрать проект самостоятельно, вам понадобится Python 3.10+.
-
-1. Клонируйте репозиторий:
-   ```bash
-   git clone https://github.com/ВАШ_ЛОГИН/ZipForge.git
-   cd ZipForge
+Пока не принимается 
