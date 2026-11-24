@@ -2,7 +2,7 @@
 
 **ZipForge** — это простой, быстрый и безопасный архиватор для Windows с графическим интерфейсом, написанный на Python.
 
-![ZipForge Screenshot](https://via.placeholder.com/800x450.png?text=ZipForge+Screenshot) 
+[![ZipForge Screenshot](https://via.placeholder.com/800x450.png?text=ZipForge+Screenshot) ](https://github.com/DenchickYTT/ZipForge/blob/main/icon.png)
 <!-- Замени ссылку выше на реальный скриншот твоего приложения -->
 
 ## ✨ Особенности
