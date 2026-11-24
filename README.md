@@ -27,5 +27,5 @@
 
 ## Мои Соцсети:
 
-*   **Телеграмм - https://t.me/ZipForgeOfficial
-*   **Твиттер - https://x.com/ZipForgeofficia
+*   **Телеграмм** - https://t.me/ZipForgeOfficial
+*   **Твиттер** - https://x.com/ZipForgeofficia
