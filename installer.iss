@@ -1,6 +1,6 @@
-; Скрипт установщика для ZipForge v1.2.0
+; Скрипт установщика для ZipForge v1.2.1
 #define MyAppName "ZipForge"
-#define MyAppVersion "1.2.0"
+#define MyAppVersion "1.2.1"
 #define MyAppPublisher "DenchickYTT"
 #define MyAppURL "https://github.com/DenchickYTT/ZipForge"
 #define MyAppExeName "ZipForge.exe"

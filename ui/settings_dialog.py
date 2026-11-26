@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QLabel, QComboBox,
     QDialogButtonBox, QTabWidget, QWidget, QPushButton, QCheckBox,
-    QMessageBox, QFormLayout
+    QMessageBox, QFormLayout, QSpinBox
 )
 from core.settings import settings
 from core.i18n import tr
@@ -14,10 +14,9 @@ class SettingsDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle(tr("dlg_settings_title"))
-        self.resize(480, 400)
+        self.resize(480, 450)  # Чуть выше из-за новых полей
 
         layout = QVBoxLayout(self)
-
         self.tabs = QTabWidget()
 
         # --- Вкладка 1: Основные ---
@@ -38,7 +37,7 @@ class SettingsDialog(QDialog):
         self.theme_combo = QComboBox()
         self.theme_combo.addItem(tr("settings_theme_dark"), "dark")
         self.theme_combo.addItem(tr("settings_theme_light"), "light")
-        self.theme_combo.addItem(tr("settings_theme_system"), "system")  # <-- Системная тема
+        self.theme_combo.addItem(tr("settings_theme_system"), "system")
         idx = self.theme_combo.findData(settings.get("theme", "dark"))
         self.theme_combo.setCurrentIndex(max(0, idx))
         main_layout.addRow(tr("settings_theme"), self.theme_combo)
@@ -55,6 +54,27 @@ class SettingsDialog(QDialog):
         self.level_combo.setCurrentIndex(settings.get("default_compression", 6))
         arch_layout.addRow("Уровень сжатия:", self.level_combo)
 
+        # Новая настройка: Показывать скрытые файлы
+        self.hidden_check = QCheckBox("Показывать скрытые файлы")
+        self.hidden_check.setChecked(settings.get("show_hidden", False))
+        arch_layout.addRow(self.hidden_check)
+
+        # Новая настройка: Подтверждать удаление
+        self.confirm_check = QCheckBox("Подтверждать удаление файлов")
+        self.confirm_check.setChecked(settings.get("confirm_delete", True))
+        arch_layout.addRow(self.confirm_check)
+
+        # Новая настройка: Размер предпросмотра
+        self.preview_combo = QComboBox()
+        self.preview_combo.addItem("256 КБ", 256 * 1024)
+        self.preview_combo.addItem("2 МБ", 2 * 1024 * 1024)
+        self.preview_combo.addItem("10 МБ", 10 * 1024 * 1024)
+        self.preview_combo.addItem("50 МБ", 50 * 1024 * 1024)
+        cur_size = settings.get("preview_max_size", 2 * 1024 * 1024)
+        idx = self.preview_combo.findData(cur_size)
+        self.preview_combo.setCurrentIndex(max(0, idx))
+        arch_layout.addRow("Макс. размер предпросмотра:", self.preview_combo)
+
         self.tabs.addTab(self.tab_archives, "Архивы" if settings.get("language") == "ru" else "Archives")
 
         # --- Вкладка 3: Система ---
@@ -62,7 +82,6 @@ class SettingsDialog(QDialog):
         sys_layout = QVBoxLayout(self.tab_system)
 
         sys_layout.addWidget(QLabel("<b>Интеграция с Windows</b>"))
-
         btn_reg = QPushButton("Зарегистрировать в 'Открыть с помощью'")
         btn_reg.clicked.connect(self._on_register)
         sys_layout.addWidget(btn_reg)
@@ -76,7 +95,6 @@ class SettingsDialog(QDialog):
         sys_layout.addWidget(btn_unreg)
 
         sys_layout.addSpacing(15)
-
         sys_layout.addWidget(QLabel("<b>Обслуживание</b>"))
         btn_clean = QPushButton("Очистить временные файлы (.tmp)")
         btn_clean.clicked.connect(self._on_clean_temp)
@@ -105,6 +123,15 @@ class SettingsDialog(QDialog):
 
     def selected_compression(self) -> int:
         return int(self.level_combo.currentData())
+
+    def selected_show_hidden(self) -> bool:
+        return self.hidden_check.isChecked()
+
+    def selected_confirm_delete(self) -> bool:
+        return self.confirm_check.isChecked()
+
+    def selected_preview_size(self) -> int:
+        return int(self.preview_combo.currentData())
 
     def _on_register(self):
         ok, msg = register_context_menu()

@@ -2,14 +2,17 @@ import os
 import json
 from pathlib import Path
 
-# Текущая версия приложения (используется для проверки обновлений)
-APP_VERSION = "1.2.0"
+# Текущая версия приложения
+APP_VERSION = "1.2.1"
 
 DEFAULTS = {
     "language": "ru",
     "theme": "dark",
     "default_compression": 6,
-    "last_update_check": 0,  # Unix timestamp последней проверки обновлений
+    "last_update_check": 0,
+    "show_hidden": False,           # Новая настройка
+    "confirm_delete": True,         # Новая настройка
+    "preview_max_size": 2 * 1024 * 1024,  # Новая настройка (2 МБ по умолчанию)
 }
 
 def _settings_dir() -> Path:

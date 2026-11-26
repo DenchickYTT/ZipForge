@@ -24,9 +24,7 @@ class PreviewDialog(QDialog):
             label = QLabel()
             pixmap = QPixmap()
             if pixmap.loadFromData(data):
-                # Масштабируем, сохраняя пропорции. 
-                # Отнимаем по 20 пикселей с каждой стороны для отступов (чтобы не прилипало)
-                target_size = self.size() - self.minimumSizeHint() # грубый расчет
+                # Масштабируем, сохраняя пропорции
                 max_w = 680
                 max_h = 450
                 
@@ -47,6 +45,8 @@ class PreviewDialog(QDialog):
             text_edit.setReadOnly(True)
             
             # Ограничение на размер, чтобы не убить память (первые 2 МБ)
+            # Размер берется из настроек при вызове read_file_data, 
+            # но здесь мы оставляем 2 МБ на случай, если пришло больше
             preview_data = data[:2 * 1024 * 1024]
             
             try:

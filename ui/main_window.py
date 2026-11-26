@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
     QLabel, QFileDialog, QMessageBox, QHBoxLayout, QDialog, QLineEdit,
     QStyle,
 )
-from PyQt6.QtCore import QTimer, Qt   # <-- ДОБАВЛЕН Qt
+from PyQt6.QtCore import QTimer, Qt
 
 from core.zip_engine import (
     read_entries, extract_all, extract_selected, create_archive,
@@ -389,8 +389,11 @@ class MainWindow(QMainWindow):
         if not selected:
             QMessageBox.information(self, "ZipForge", tr("msg_select_for_delete"))
             return
-        answer = QMessageBox.question(self, tr("delete"), tr("dlg_delete_q", n=len(selected)))
-        if answer != QMessageBox.StandardButton.Yes: return
+        
+        if settings.get("confirm_delete", True):
+            answer = QMessageBox.question(self, tr("delete"), tr("dlg_delete_q", n=len(selected)))
+            if answer != QMessageBox.StandardButton.Yes: return
+            
         archive = self.current_archive
         pw = self.current_password
         self._confirm_and_run(tr("delete"), lambda cb: delete_from_archive(archive, selected, pw, cb))
@@ -445,6 +448,9 @@ class MainWindow(QMainWindow):
         new_lang = dlg.selected_language()
         new_theme = dlg.selected_theme()
         new_comp = dlg.selected_compression()
+        new_hidden = dlg.selected_show_hidden()
+        new_confirm = dlg.selected_confirm_delete()
+        new_preview = dlg.selected_preview_size()
 
         changed_lang = new_lang != settings.get("language", "ru")
         changed_theme = new_theme != settings.get("theme", "dark")
@@ -452,6 +458,9 @@ class MainWindow(QMainWindow):
         settings.set("language", new_lang)
         settings.set("theme", new_theme)
         settings.set("default_compression", new_comp)
+        settings.set("show_hidden", new_hidden)
+        settings.set("confirm_delete", new_confirm)
+        settings.set("preview_max_size", new_preview)
 
         if changed_theme: self._apply_style()
         if changed_lang:
